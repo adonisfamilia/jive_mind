@@ -3,17 +3,12 @@ import twilio.twiml
 import spotipy
 import requests
 import json
+import string
 
 
 app = Flask(__name__)
 
 sp = spotipy.Spotify()
-
-
-# Try adding your own number to this list!
-callers = {
-
-}
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_monkey():
@@ -21,23 +16,21 @@ def hello_monkey():
 
     from_number = request.values.get('From', None)
     text_body = request.values.get('Body', None)
+    #if text_body == none:
+    #text_body = "King Kunta"
 
+    text_body = string.replace(text_body, ' ', '+')
+    srch_param = "https://api.spotify.com/v1/search?q=" + text_body + "&type=track"
+    r = requests.get(srch_param)
+    data = r.json()
+    message = data['tracks']['items'][0]["id"]
+    track = requests.get("https://api.spotify.com/v1/tracks/" + message)
+    track_json = track.json()
+    message = track_json['name'] + " " + track_json['id']
 
-    if from_number in callers:
-        message = callers[from_number] + ", thanks for the message!"
-    else:
-        text_body = string.replace(text_body, ' ', '+')
-        srch_param = "https://api.spotify.com/v1/search?q=" + text_body + "&type=track"
-        r = requests.get(srch_param)
-        data = r.json()
-        message = data['tracks']['items'][0]["id"]
-        track = requests.get("https://api.spotify.com/v1/tracks/" + message)
-        track_json = track.json()
-        message = track_json['name']
-
-
+    print message
     resp = twilio.twiml.Response()
-    resp.message(text_body)
+    resp.message(message)
 
     return str(resp)
 
