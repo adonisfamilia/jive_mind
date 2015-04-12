@@ -10,14 +10,16 @@ app = Flask(__name__)
 
 sp = spotipy.Spotify()
 
-@app.route("/", methods=['GET', 'POST'])
-def hello_monkey():
+@app.route('/')
+def root():
+    return 'Hello World!'
+
+@app.route("/search", methods=['POST'])
+def search_song():
     """Respond and greet the caller by name."""
 
     from_number = request.values.get('From', None)
     text_body = request.values.get('Body', None)
-    #if text_body == none:
-    #text_body = "King Kunta"
 
     text_body = string.replace(text_body, ' ', '+')
     srch_param = "https://api.spotify.com/v1/search?q=" + text_body + "&type=track"
