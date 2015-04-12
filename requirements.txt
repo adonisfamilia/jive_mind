@@ -2,3 +2,7 @@ Flask>=0.8
 twilio>=3.3.6
 spotipy>=2.3.3
 gunicorn==0.17.2
+pycrypto==2.6.1
+Mock
+oauthlib
+requests-oauthlib
