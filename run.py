@@ -28,7 +28,7 @@ def hello_monkey():
     else:
         text_body = string.replace(text_body, ' ', '+')
         srch_param = "https://api.spotify.com/v1/search?q=" + text_body + "&type=track"
-        r = requests.get("https://api.spotify.com/v1/search?q=&type=track")
+        r = requests.get(srch_param)
         data = r.json()
         message = data['tracks']['items'][0]["id"]
         track = requests.get("https://api.spotify.com/v1/tracks/" + message)
