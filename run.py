@@ -26,7 +26,7 @@ def hello_monkey():
     if from_number in callers:
         message = callers[from_number] + ", thanks for the message!"
     else:
-        form = textbody.replace (" ", "_")
+        form = textbody.replace (" ", "+")
         r = requests.get("https://api.spotify.com/v1/search?q=" + form + "&type=track")
         data = r.json()
         message = data['tracks']['items'][0]["id"]
